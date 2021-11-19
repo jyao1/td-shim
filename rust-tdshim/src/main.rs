@@ -183,7 +183,7 @@ pub extern "win64" fn _start(
     log::info!("num_vcpus - {:?}\n", td_info.num_vcpus);
 
     let memory_top = hob_lib::get_system_memory_size_below_4gb(hob_list);
-    let runtime_memorey_layout = RuntimeMemoryLayout::new(memory_top);
+    let runtime_memory_layout = RuntimeMemoryLayout::new(memory_top);
 
     let mut e820_table = e820::E820Table::new();
 
@@ -215,14 +215,14 @@ pub extern "win64" fn _start(
         offset += hob_lib::align_hob(header.length) as usize;
     }
 
-    let memory_bottom = runtime_memorey_layout.runtime_memory_bottom;
+    let memory_bottom = runtime_memory_layout.runtime_memory_bottom;
 
-    let td_payload_hob_base = runtime_memorey_layout.runtime_hob_base;
-    let td_payload_stack_base = runtime_memorey_layout.runtime_stack_base;
-    let td_payload_shadow_stack_base = runtime_memorey_layout.runtime_shadow_stack_base;
-    let td_payload_shadow_stack_top = runtime_memorey_layout.runtime_shadow_stack_top;
-    let td_event_log_base = runtime_memorey_layout.runtime_event_log_base;
-    let td_acpi_base = runtime_memorey_layout.runtime_acpi_base;
+    let td_payload_hob_base = runtime_memory_layout.runtime_hob_base;
+    let td_payload_stack_base = runtime_memory_layout.runtime_stack_base;
+    let td_payload_shadow_stack_base = runtime_memory_layout.runtime_shadow_stack_base;
+    let td_payload_shadow_stack_top = runtime_memory_layout.runtime_shadow_stack_top;
+    let td_event_log_base = runtime_memory_layout.runtime_event_log_base;
+    let td_acpi_base = runtime_memory_layout.runtime_acpi_base;
 
     heap::init();
     paging::init();
@@ -317,7 +317,7 @@ pub extern "win64" fn _start(
     );
 
     let memory_size = ipl::get_memory_size(hob_list);
-    let mut mem = Memory::new(&runtime_memorey_layout, memory_size);
+    let mut mem = Memory::new(&runtime_memory_layout, memory_size);
 
     mem.setup_paging();
 
@@ -353,7 +353,7 @@ pub extern "win64" fn _start(
                 // When all the ACPI tables are put into the ACPI memory
                 // build the XSDT and RSDP
                 let rsdp = acpi_tables.finish();
-                let e820_table = create_e820_entries(&runtime_memorey_layout);
+                let e820_table = create_e820_entries(&runtime_memory_layout);
 
                 linux::boot::boot_kernel(
                     memslice::get_mem_slice_mut(memslice::SliceType::Payload),

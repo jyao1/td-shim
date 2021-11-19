@@ -150,7 +150,7 @@ pub fn get_next_extension_guid_hob<'a>(hob_list: &'a [u8], guid: &[u8]) -> Optio
         let header: Header = hob_list.pread(offset).unwrap();
         match header.r#type {
             HOB_TYPE_GUID_EXTENSION => {
-                let guid_hob: GuidExtention = hob_list.pread(offset).unwrap();
+                let guid_hob: GuidExtension = hob_list.pread(offset).unwrap();
                 if guid_hob.name == guid[0..16] {
                     return Some(&hob_list[offset..]);
                 }
@@ -169,10 +169,10 @@ pub fn get_next_extension_guid_hob<'a>(hob_list: &'a [u8], guid: &[u8]) -> Optio
 pub fn get_guid_data(hob_list: &'_ [u8]) -> &'_ [u8] {
     let mut offset = 0;
 
-    let guid_hob: GuidExtention = hob_list.pread(offset).unwrap();
-    offset += size_of::<GuidExtention>();
+    let guid_hob: GuidExtension = hob_list.pread(offset).unwrap();
+    offset += size_of::<GuidExtension>();
 
-    let guid_data_len = guid_hob.header.length as usize - size_of::<GuidExtention>();
+    let guid_data_len = guid_hob.header.length as usize - size_of::<GuidExtension>();
     &hob_list[offset..offset + guid_data_len]
 }
 

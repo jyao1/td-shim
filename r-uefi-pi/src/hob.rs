@@ -254,7 +254,7 @@ impl Cpu {
 }
 
 #[derive(Copy, Clone, Debug, Pread, Pwrite)]
-pub struct GuidExtention {
+pub struct GuidExtension {
     pub header: Header,
     pub name: [u8; 16], // Guid
 }
