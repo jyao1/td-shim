@@ -40,23 +40,23 @@ As soon as you run this command, you should see AFL’s interface start up:
 
 ![image-20210628084437384](../fuzzing/fuzz1.png)
 
-### view coverage 
+### view coverage
 
-If you need to check coverage, follow the [coverage.md](./coverage.md) operation, Script fuzz_run.sh runs for a period fo time in each case. 
+If you need to check coverage, follow the [coverage.md](./coverage.md) operation, Script fuzz_run.sh runs for a period fo time in each case.
 Add the coverage string after the script collects info information and generates html files. The html file location is target/debug/fuzz_coverge.
 If you need to run a specific case, please modify the cmd tuple in the script.
 Can run at the same time but merge will cause problems
 
     ```
-    # Install screen 
+    # Install screen
     sudo apt install screen
     # Install expect
     sudoapt install expect
     # Run each fuzz for one hour
     bash fuzz_run.sh
-    # Run each fuzz for one hour and Genarate source-based coverage report 
+    # Run each fuzz for one hour and Genarate source-based coverage report
     bash fuzz_run.sh Scoverage
-    # Run each fuzz for one hour and Genarate gcov-based coverage report 
+    # Run each fuzz for one hour and Genarate gcov-based coverage report
     bash fuzz_run.sh Gcoverage
 
     # If thre is an error in fuzzing, please follow, and switch to the root

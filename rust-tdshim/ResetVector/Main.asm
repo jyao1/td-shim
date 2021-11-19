@@ -70,7 +70,7 @@ Main32:
 
     ;
     ; The SEC entry point
-    
+
     mov edi, dword [TD_SHIM_RESET_SEC_CORE_BASE_ADDR]
     mov ebx, dword [TD_SHIM_RESET_SEC_CORE_SIZE_ADDR]
     mov esi, dword [TD_SHIM_RESET_SEC_CORE_ENTRY_POINT_ADDR]

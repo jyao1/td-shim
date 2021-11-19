@@ -24,7 +24,7 @@ export RUSTFLAGS="-Zinstrument-coverage"
 # Ensure each test runs gets its own profile information by defining the LLVM_PROFILE_FILE environment variable (%p will be replaced by the process ID, and %m by the binary signature):
 export LLVM_PROFILE_FILE="your_name-%p-%m.profraw"
 
-# test the program 
+# test the program
 cargo test
 
 # Generate a HTML report in the coverage/ directory.

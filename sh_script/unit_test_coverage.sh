@@ -7,17 +7,17 @@ fi
 git clean -f
 
 export RUSTFLAGS="-Zinstrument-coverage"
-export LLVM_PROFILE_FILE="your_name-%p-%m.profraw" 
+export LLVM_PROFILE_FILE="your_name-%p-%m.profraw"
 
 cd ./pe-loader
-cargo test 
+cargo test
 cd ..
 
 cd ./elf-loader
-cargo test 
+cargo test
 cd ..
 
-cargo test 
+cargo test
 
 grcov . --binary-path ./target/debug/ -s . -t html --branch --ignore-not-existing -o ./target/debug/coverage/
 

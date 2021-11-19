@@ -48,7 +48,7 @@ need to change the toolchain data to nightly-2021-08-20.
 
 Otherwise rudra won't work.
 
-If there are deprecated warnings, please use`cargo rudra` ignore the warning. 
+If there are deprecated warnings, please use`cargo rudra` ignore the warning.
 
 If there is component A and security bug component B.
 ```
@@ -64,11 +64,11 @@ echo "unsafe impl<P: Ord> Send for Atom<P> {}" >> member1/src/lib.rs
 
 echo 'member1 = {path="../member1"}' >> member/Cargo.toml
 # pass
-cargo build -p member 
+cargo build -p member
 # pass
 cargo build -p member1
 cd member
-cargo rudra 
+cargo rudra
 
 2021-09-09 23:19:12.603401 |INFO | [rudra-progress] Rudra finished
 Error (SendSyncVariance:/PhantomSendForSend/NaiveSendForSend/RelaxSend): Suspicious impl of `Send` found

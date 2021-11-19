@@ -8,7 +8,7 @@ jobs:
         checks:
           # - advisories
           - sources
-          - bans 
+          - bans
 
     # Prevent sudden announcement of a new advisory from failing ci:
     continue-on-error: ${{ matrix.checks == 'sources' }}
