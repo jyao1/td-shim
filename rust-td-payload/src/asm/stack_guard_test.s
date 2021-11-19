@@ -8,5 +8,5 @@
 stack_guard_test:
 
 loop:
-    pushq %rax
+    push rax
     jmp loop

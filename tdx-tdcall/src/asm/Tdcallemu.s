@@ -19,20 +19,20 @@
 .global td_call
 td_call:
         # tdcall_push_regs
-        pushq %rbp
-        movq %rsp, %rbp
-        pushq %r15
-        pushq %r14
-        pushq %r13
-        pushq %r12
-        pushq %rbx
-        pushq %rsi
-        pushq %rdi
+        push rbp
+        mov rbp, rsp
+        push r15
+        push r14
+        push r13
+        push r12
+        push rbx
+        push rsi
+        push rdi
 
-       movq %rcx, %rax
-       movq %rdx, %rcx
-       movq %r8, %rdx
-       movq %r9, %r8
+       mov rax, rcx
+       mov rcx, rdx
+       mov rdx, r8
+       mov r8, r9
 
        # tdcall
        .if USE_TDX_EMULATION != 0
@@ -42,28 +42,28 @@ td_call:
        .endif
 
        # exit if tdcall reports failure.
-       testq %rax, %rax
+       test rax, rax
        jnz exit
 
        # test if caller wanted results
-       movq  first_variable_on_stack_offset(%rbp), %r12
-       testq %r12, %r12
+       mov  r12, [rsp + first_variable_on_stack_offset]
+       test r12, r12
        jz exit
-       movq %rcx, 0(%r12)
-       movq %rdx, 8(%r12)
-       movq %r8,  16(%r12)
-       movq %r9,  24(%r12)
-       movq %r10, 32(%r12)
-       movq %r11, 408(%r12)
+       mov [r12], rcx
+       mov [r12+8], rdx
+       mov [r12+16], r8
+       mov [r12+24], r9
+       mov [r12+32], r10
+       mov [r12+40], r11
 exit:
         # tdcall_pop_regs
-        popq %rdi
-        popq %rsi
-        popq %rbx
-        popq %r12
-        popq %r13
-        popq %r14
-        popq %r15
-        popq %rbp
+        pop rdi
+        pop rsi
+        pop rbx
+        pop r12
+        pop r13
+        pop r14
+        pop r15
+        pop rbp
 
        ret

@@ -11,14 +11,12 @@
 #       );
 .global switch_stack_call
 switch_stack_call:
-
-        subq $32, %rdx
-        movq %rdx, %rsp
-        movq %rcx, %rax
-        movq %r8, %rcx
-        movq %r9, %rdx
-        call *%rax
-
-        int $3
-        jmp .
+        sub    rdx,0x20
+        mov    rsp,rdx
+        mov    rax,rcx
+        mov    rcx,r8
+        mov    rdx,r9
+        call   rax
+        int3
+        jmp    switch_stack_call
         ret

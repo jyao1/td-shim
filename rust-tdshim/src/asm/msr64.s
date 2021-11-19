@@ -9,8 +9,8 @@
 asm_read_msr64:
 
     rdmsr
-    shlq $0x20, %rdx 
-    orq %rdx, %rax
+    shl rdx, 0x20
+    or  rax, rdx
     ret
 
 #  asm_write_msr64(
@@ -20,7 +20,7 @@ asm_read_msr64:
 .global asm_write_msr64
 asm_write_msr64:
 
-    mov %rdx, %rax
-    shr $0x20, %rdx
+    mov rax, rdx
+    shr rdx, 0x20
     wrmsr
     ret

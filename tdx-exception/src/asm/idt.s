@@ -8,7 +8,7 @@
 # )
 .global sidt_call
 sidt_call:
-    sidt    (%rcx)
+    sidt    [rcx]
     ret
 
 
@@ -17,27 +17,27 @@ sidt_call:
 # )
 .global lidt_call
 lidt_call:
-    lidt    (%rcx)
+    lidt    [rcx]
     ret
 
 
 .global read_cs_call
 read_cs_call:
-    mov   %cs, %rax
+    mov   eax, cs
     ret
 
 .global read_cr0_call
 read_cr0_call:
-    mov   %cr0, %rax
+    mov   rax, cr0
     ret
 
 .global read_rflags_call
 read_rflags_call:
-    pushfq
-    popq  %rax
+    pushf
+    pop  rax
     ret
 
 .global read_cr4_call
 read_cr4_call:
-    mov   %cr4, %rax
+    mov   rax, cr4
     ret

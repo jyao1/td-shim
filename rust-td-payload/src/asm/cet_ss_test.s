@@ -8,14 +8,14 @@
 #       );
 .global cet_ss_test
 cet_ss_test:
-        movq %rsp, %rdx
+        mov rdx, rsp
 rcx_test:
-        cmp $1000, %rcx
+        cmp rcx, 0x1000
         jnz rcx_test
 write_stack:
-        movb $100, (%rdx)
-        addq $1, %rdx
-        decq %rcx
+        mov byte ptr [rdx], 100
+        add rdx, 1
+        dec rcx
         jnz write_stack
 
         ret

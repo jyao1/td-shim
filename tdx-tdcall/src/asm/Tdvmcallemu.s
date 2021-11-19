@@ -26,42 +26,42 @@
 .global td_vm_call
 td_vm_call:
         # tdcall_push_regs
-        pushq %rbp
-        movq %rsp, %rbp
-        pushq %r15
-        pushq %r14
-        pushq %r13
-        pushq %r12
-        pushq %rbx
-        pushq %rsi
-        pushq %rdi
+        push rbp
+        mov  rbp, rsp
+        push r15
+        push r14
+        push r13
+        push r12
+        push rbx
+        push rsi
+        push rdi
 
-       movq %rcx, %r11
-       movq %rdx, %r12
-       movq %r8, %r13
-       movq %r9, %r14
-       movq first_variable_on_stack_offset(%rsp), %r15
+        mov  r11, rcx
+        mov  r12, rdx
+        mov  r13, r8
+        mov  r14, r9
+        mov  r15, [rsp+first_variable_on_stack_offset]
 
        #tdcall_regs_preamble TDVMCALL, TDVMCALL_EXPOSE_REGS_MASK
-        movq $TDVMCALL, %rax
+        mov rax, TDVMCALL
 
-        movl $TDVMCALL_EXPOSE_REGS_MASK, %ecx
+        mov ecx, TDVMCALL_EXPOSE_REGS_MASK
 
         # R10 = 0 (standard TDVMCALL)
 
-        xorl %r10d, %r10d
+        xor r10d, r10d
 
         # Zero out unused (for standard TDVMCALL) registers to avoid leaking
         # secrets to the VMM.
 
-        xorl %ebx, %ebx
-        xorl %esi, %esi
-        xorl %edi, %edi
+        xor ebx, ebx
+        xor esi, esi
+        xor edi, edi
 
-        xorl %edx, %edx
-        xorl %ebp, %ebp
-        xorl %r8d, %r8d
-        xorl %r9d, %r9d
+        xor edx, edx
+        xor ebp, ebp
+        xor r8d, r8d
+        xor r9d, r9d
 
        # tdcall
        .if USE_TDX_EMULATION != 0
@@ -71,43 +71,43 @@ td_vm_call:
        .endif
 
        # ignore return dataif TDCALL reports failure.
-       testq %rax, %rax
+       test rax, rax
        jnz no_return_data
 
        # Propagate TDVMCALL success/failure to return value.
-       movq %r10, %rax
+       mov rax, r10
 
        # Retrieve the Val pointer.
-       movq second_variable_on_stack_offset(%rsp), %r9
-       testq %r9, %r9
+       mov r9, [rsp+second_variable_on_stack_offset]
+       test r9, r9
        jz no_return_data
 
        # On success, propagate TDVMCALL output value to output param
-       testq %rax, %rax
+       test rax, rax
        jnz no_return_data
-       mov %r11, (%r9)
+       mov [r9], r11
 
 no_return_data:
         #tdcall_regs_postamble
-        xorl %ebx, %ebx
-        xorl %esi, %esi
-        xorl %edi, %edi
+        xor ebx, ebx
+        xor esi, esi
+        xor edi, edi
 
-        xorl %ecx, %ecx
-        xorl %edx, %edx
-        xorl %r8d,  %r8d
-        xorl %r9d,  %r9d
-        xorl %r10d, %r10d
-        xorl %r11d, %r11d
+        xor ecx, ecx
+        xor edx, edx
+        xor r8d, r8d
+        xor r9d, r9d
+        xor r10d, r10d
+        xor r11d, r11d
 
         # tdcall_pop_regs
-        popq %rdi
-        popq %rsi
-        popq %rbx
-        popq %r12
-        popq %r13
-        popq %r14
-        popq %r15
-        popq %rbp
+        pop rdi
+        pop rsi
+        pop rbx
+        pop r12
+        pop r13
+        pop r14
+        pop r15
+        pop rbp
 
        ret
