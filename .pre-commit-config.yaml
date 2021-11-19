@@ -5,6 +5,7 @@ repos:
     -   id: fmt
     -   id: cargo-check
     -   id: clippy
+        args: ["--", "-A", "clippy::redundant_field_names", "-D", "warnings"]
 -   repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v4.0.1
     hooks:
