@@ -42,7 +42,7 @@ impl Default for E820Table {
     fn default() -> Self {
         Self {
             entries: [E820Entry::default(); MAX_E820_ENTRY],
-            ..Default::default()
+            size: 0
         }
     }
 }
