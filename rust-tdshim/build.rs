@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: BSD-2-Clause-Patent
 
 use std::{
-    env, format, fs,
+    env, format,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -48,23 +48,8 @@ fn main() {
         Path::new("ResetVector/ResetVector.asm").to_str().unwrap()
     );
 
-    let old_current_dir = env::current_dir().unwrap();
-    let new_current_dir = old_current_dir.join("ResetVector");
-    let out_dir = env::var("OUT_DIR").unwrap();
-    let out_file = PathBuf::from(out_dir).join("ResetVector.bin");
-    let copy_to_dir = out_file
-        .parent()
-        .unwrap()
-        .parent()
-        .unwrap()
-        .parent()
-        .unwrap()
-        .parent()
-        .unwrap();
-    let copy_to_file = copy_to_dir.join("ResetVector.bin");
-
-    eprintln!("out_file is     {}", out_file.to_str().unwrap());
-    eprintln!("copy_to_file is {}", copy_to_file.to_str().unwrap());
+    let reset_vector_src_dir = get_cargo_manifest_dir().join("ResetVector");
+    let reset_vector_bin_file = get_target_output_dir().join("ResetVector.bin");
 
     let use_tdx_emulation_arg = format!(
         "-DUSE_TDX_EMULATION={}",
@@ -105,11 +90,11 @@ fn main() {
         build_time::TD_SHIM_RESET_SEC_CORE_SIZE_ADDR
     );
 
-    let _ = env::set_current_dir(new_current_dir.as_path());
+    let _ = env::set_current_dir(reset_vector_src_dir.as_path());
     run_command(nasm(
         Path::new("ResetVector.nasm"),
         "bin",
-        out_file.as_path(),
+        reset_vector_bin_file.as_path(),
         &[
             &use_tdx_emulation_arg,
             &td_shim_ipl_base_arg,
@@ -126,7 +111,21 @@ fn main() {
             &loaded_sec_core_size,
         ],
     ));
+}
 
-    let _ = env::set_current_dir(old_current_dir.as_path());
-    let _ = fs::copy(&out_file, &copy_to_file).unwrap();
+fn get_target_output_dir() -> PathBuf {
+    // In build script, this is set to the folder
+    // where the build script should place its output.
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let path = PathBuf::from(out_dir);
+
+    // Build script outputs relative to target outputs.
+    // Therefore we get target outputs path.
+    path.join("../../..")
+}
+
+fn get_cargo_manifest_dir() -> PathBuf {
+    // Environment variables Cargo sets for crates
+    // The directory containing the manifest of your package.
+    PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
 }
