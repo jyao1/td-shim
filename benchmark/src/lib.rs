@@ -63,6 +63,7 @@ unsafe impl GlobalAlloc for MyHeap {
     }
 }
 
+#[derive(Default)]
 pub struct BenchmarkContext {
     name: &'static str,
     start_timestamp: u64,
@@ -75,10 +76,7 @@ impl BenchmarkContext {
     pub fn new(memory_layout: RuntimeMemoryLayout, name: &'static str) -> Self {
         BenchmarkContext {
             name,
-            start_timestamp: 0,
-            end_timestamp: 0,
-            max_stack: 0,
-            max_heap: 0,
+            ..Default::default()
         }
     }
 
