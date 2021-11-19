@@ -38,12 +38,18 @@ pub struct E820Table {
     size: usize,
 }
 
+impl Default for E820Table {
+    fn default() -> Self {
+        Self {
+            entries: [E820Entry::default(); MAX_E820_ENTRY],
+            ..Default::default()
+        }
+    }
+}
+
 impl E820Table {
     pub fn new() -> Self {
-        E820Table {
-            entries: [E820Entry::default(); MAX_E820_ENTRY],
-            size: 0,
-        }
+        Self::default()
     }
     pub fn add_range(&mut self, r#type: E820Type, start: u64, length: u64) {
         if self.size == MAX_E820_ENTRY {

@@ -116,6 +116,7 @@ impl Xsdt {
     }
 }
 
+#[derive(Default)]
 pub struct AcpiTables {
     acpi_memory: &'static mut [u8],
     size: usize,
@@ -127,9 +128,7 @@ impl AcpiTables {
     pub fn new(td_acpi_mem: &'static mut [u8]) -> Self {
         AcpiTables {
             acpi_memory: td_acpi_mem,
-            size: 0,
-            table_num: 0,
-            table_addr: [0; ACPI_TABLES_MAX_NUM],
+            ..Default::default()
         }
     }
 

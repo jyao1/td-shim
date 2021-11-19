@@ -22,12 +22,13 @@ const GUARD_PAGE_SIZE: u64 = 0x1000;
 
 const CR4_CET_ENABLE_BIT: u64 = 1 << 23;
 
+#[derive(Default)]
 struct Isst {
     entries: [u64; 8],
 }
 
 lazy_static! {
-    static ref INTERRUPT_SSP_TABLE: Mutex<Isst> = Mutex::new(Isst { entries: [0; 8] });
+    static ref INTERRUPT_SSP_TABLE: Mutex<Isst> = Mutex::new(Isst::default());
 }
 
 extern "win64" {
