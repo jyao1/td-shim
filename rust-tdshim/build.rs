@@ -60,8 +60,8 @@ fn main() {
         }
     );
     let td_shim_ipl_base_arg = format!("-DTOP_OF_BFV=0x{:X}", build_time::TD_SHIM_IPL_BASE);
-    let td_mailbax_base_arg = format!("-DTD_MAILBOX_BASE=0x{:X}", build_time::TD_SHIM_MAILBOX_BASE);
-    let td_mailbax_size_arg = format!("-DTD_MAILBOX_SIZE=0x{:X}", build_time::TD_SHIM_MAILBOX_SIZE);
+    let td_mailbox_base_arg = format!("-DTD_MAILBOX_BASE=0x{:X}", build_time::TD_SHIM_MAILBOX_BASE);
+    let td_mailbox_size_arg = format!("-DTD_MAILBOX_SIZE=0x{:X}", build_time::TD_SHIM_MAILBOX_SIZE);
     let td_shim_hob_base_arg = format!("-DTD_HOB_BASE=0x{:X}", build_time::TD_SHIM_HOB_BASE);
     let td_shim_hob_size_arg = format!("-DTD_HOB_SIZE=0x{:X}", build_time::TD_SHIM_HOB_SIZE);
     let td_shim_tmp_stack_base_arg = format!(
@@ -98,8 +98,8 @@ fn main() {
         &[
             &use_tdx_emulation_arg,
             &td_shim_ipl_base_arg,
-            &td_mailbax_base_arg,
-            &td_mailbax_size_arg,
+            &td_mailbox_base_arg,
+            &td_mailbox_size_arg,
             &td_shim_hob_base_arg,
             &td_shim_hob_size_arg,
             &td_shim_tmp_stack_base_arg,
