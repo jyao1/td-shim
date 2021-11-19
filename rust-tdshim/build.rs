@@ -50,6 +50,10 @@ fn main() {
 
     let reset_vector_src_dir = get_cargo_manifest_dir().join("ResetVector");
     let reset_vector_bin_file = get_target_output_dir().join("ResetVector.bin");
+    eprintln!(
+        "reset_vector_bin_file is {}",
+        reset_vector_bin_file.to_str().unwrap()
+    );
 
     let use_tdx_emulation_arg = format!(
         "-DUSE_TDX_EMULATION={}",
