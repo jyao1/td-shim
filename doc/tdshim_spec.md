@@ -6,7 +6,7 @@ Data: October 2021
 
 ## Background
 
-Hardware virtualization-based containers are designed to launch and run containerized applications in hardware virtualized environments. While containers usually run directly as bare-metal applications, using TD or VT as an isolation layer from the host OS is used as a secure and efficient way of building multi-tenant Cloud-native infrastructures (e.g. Kubernetes). 
+Hardware virtualization-based containers are designed to launch and run containerized applications in hardware virtualized environments. While containers usually run directly as bare-metal applications, using TD or VT as an isolation layer from the host OS is used as a secure and efficient way of building multi-tenant Cloud-native infrastructures (e.g. Kubernetes).
 
 In order to match the short start-up time and resource consumption overhead of bare-metal containers, runtime architectures for TD- and VT-based containers put a strong focus on minimizing boot time. They must also launch the container payload as quickly as possible. Hardware virtualization-based containers typically run on top of simplified and customized Linux kernels to minimize the overall guest boot time.
 
@@ -68,7 +68,7 @@ NOTE: This flow just shows the VMM basic flow on how the VMM loads the TD memory
  * TD Shim uses TDCALL[TDG.MR.RTMR.EXTEND] to extend the TD_HOB to runtime measurement register (RTMR) with, then parse the TD_HOB.
  * TD Shim gets the memory information and accepts the memory. It also maintains the memory map.
 
-NOTE: TD Shim shall build the trusted chain by extending the component to RTMR before use. All input from the VMM shall be extended unless it is already measured in TD measurement register (MRTD). 
+NOTE: TD Shim shall build the trusted chain by extending the component to RTMR before use. All input from the VMM shall be extended unless it is already measured in TD measurement register (MRTD).
 
 4.	TD Shim loads payload
  * TD Shim measures the payload parameter to RTMR.
@@ -133,7 +133,7 @@ Rules for the TDVF_SECTION:
  * A TD-Shim shall include at least one BFV and the reset vector shall be inside of BFV. The RawDataSize of BFV must be non-zero.
  * A TD-Shim may have zero, one or multiple CFVs. The RawDataSize of CFV must be non-zero.
  * A TD-Shim may have zero or one TD_HOB section. The RawDataSize of TD_HOB must be zero. If TD-Shim reports zero TD_HOB section, then TD-Shim shall report all required memory in PermMem section.
- * A TD-Shim may have zero or one TempMem. The RawDataSize of TempMem must be zero. 
+ * A TD-Shim may have zero or one TempMem. The RawDataSize of TempMem must be zero.
  * A TD-Shim may have zero, one or multiple PermMem section. The RawDataSize of PermMem must be zero. If a TD provides PermMem section, that means the TD will own the memory allocation. VMM shall allocate the permanent memory for this TD. TD will NOT use the system memory information in the TD HOB. Even if VMM adds system memory information in the TD HOB, it will ne ignored.
  * A TD-Shim may have zero or one Payload. The RawDataSize of Payload must be non-zero, if the whole image includes the Payload. Otherwise the RawDataSize must be zero.
  * A TD-Shim may have zero or one  PayloadParam.  PayloadParam is present only if the Payload is present.
@@ -260,7 +260,7 @@ typedef enum {
   // Payload Binary is bzImage, follow Linux boot protocol.
   // The first 512 bytes are boot_param. (zero page)
   // The entrypoint is start address of loaded 64bit Linux kernel
-  //   plus 0x200 
+  //   plus 0x200
   PayloadImageTypeBzImage,
 
   // Payload Binary is VMM loaded vmLinux, follow Linux boot protocol.
@@ -327,7 +327,7 @@ TD Shim shall support a minimal set of ACPI tables. ACPI specification defined R
 
 #### Multiple Processor Support
 
-Because the Intel TDX module initializes all CPUs and allows them to jump to the reset vector at the same time, the TD Shim shall rendezvous all processor, and only let the BSP does the TD initialization and lets APs do wait-loop in the X64 long mode. 
+Because the Intel TDX module initializes all CPUs and allows them to jump to the reset vector at the same time, the TD Shim shall rendezvous all processor, and only let the BSP does the TD initialization and lets APs do wait-loop in the X64 long mode.
 
 The AP init state is exactly same as the BSP init state. The TD Shim uses TDCALL[TDG.VP.INFO] to get the TD_INFO. The VCPU_INDEX is reported by INIT_STATE.RSI or TD_INFO.R9[0:31]. It is the starting from 0 and allocated sequentially on each successful SEAMCALL[TDH.SYS.LP.INIT].
 
@@ -337,7 +337,7 @@ The MAX_VCPUS is reported by TD_INFO.R8[32:63]. It is TD's maximum number of Vir
 
 Intel TDX module will start the VCPU with VCPU_INDEX from 0 to (NUM_VCPUS – 1). As such, the TD Shim can treat the BSP as the CPU with VCPU_INDEX 0. However, the TD Shim cannot assume that the CPU with VCPU_INDEX 0 is the first one to launch. The TD Shim needs to rendezvous in early initialization code, let the BSP execute the main boot flow and let APs execute in the wait loop.
 
-TD Shim shall report the multiple processor information via MADT - https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#multiple-apic-description-table-madt. 
+TD Shim shall report the multiple processor information via MADT - https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#multiple-apic-description-table-madt.
 
 In order to support AP wake up, TD Shim shall report multiprocessor wakeup structure in MADT to share mailbox information with the payload or OS kernel, and send the OS commands via ACPI mailbox to wakeup APs. Please refer to https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#multiprocessor-wakeup-structure.
 
@@ -443,7 +443,7 @@ Table 3.4-1 shows the E820 memory map.
 | AddressRangeNVS        | 4     | Firmware Reserved for ACPI, such as the memory used in ACPI OpRegion. | Private        | Reserved                           |
 | AddressRangeUnaccepted | 8     | Allocated by VMM, but not accepted by TD guest yet.                   | Unaccepted     | Use after convert to private page. |
 
-For the payload supporting Linux Boot Protocol, the TD Shim shall report E820 table as part of boot parameter - e820_table (offset 0x2d0)  https://www.kernel.org/doc/Documentation/x86/zero-page.txt. 
+For the payload supporting Linux Boot Protocol, the TD Shim shall report E820 table as part of boot parameter - e820_table (offset 0x2d0)  https://www.kernel.org/doc/Documentation/x86/zero-page.txt.
 
 For the payload not supporting Linux Boot Protocol, the TD Shim shall report E820 table via E820 Extension HOB.
 
@@ -600,7 +600,7 @@ APs Resource = AP Page Table (Reserved) + AP Number * AP Stack (Reserved)
 ### Industry Standard
 
 * UEFI org, ACPI Specification Version 6.4 - https://uefi.org/sites/default/files/resources/ACPI_Spec_6_4_Jan22.pdf
-* UEFI org, UEFI Specification Version 2.9 - https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf 
+* UEFI org, UEFI Specification Version 2.9 - https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf
 * UEFI org, UEFI Platform Initialization Specification Version 1.7 - https://uefi.org/sites/default/files/resources/PI_Spec_1_7_A_final_May1.pdf
 * PCI-SIG, PCI Firmware Specification Revision 3.2 - https://pcisig.com/specifications
 * Multi-Processor Specification Version 1.4
@@ -617,5 +617,3 @@ APs Resource = AP Page Table (Reserved) + AP Number * AP Stack (Reserved)
 * Linux, X86 Zero Page - https://www.kernel.org/doc/Documentation/x86/zero-page.txt
 * Linux, X86 Boot Params definition - https://github.com/torvalds/linux/blob/master/arch/x86/include/uapi/asm/bootparam.h
 * Linux, Kernel Command Line Parameter - https://www.kernel.org/doc/html/v5.0/admin-guide/kernel-parameters.html , https://man7.org/linux/man-pages/man7/bootparam.7.html
-
-

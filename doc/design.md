@@ -14,7 +14,7 @@ Below figure shows the high level design.
                      |                      |
                      +----------------------+
                                  ^
-                                 | <-------------------- td-shim spec 
+                                 | <-------------------- td-shim spec
                      +----------------------+
                      |        td-shim       |
                      |           ^          |
@@ -40,7 +40,7 @@ This repo includes a full `td-shim`, and sample `td-payload`. The consumer may c
 
 The TD_HOB is measured and event log is created at `create_td_event()` in [tcg.rs](https://github.com/jyao1/td-shim/blob/init_version/rust-tdshim/src/tcg.rs).
 
-Data Execution Prevention (DEP) is setup at `find_and_report_entry_point()` in [ipl.rs](https://github.com/jyao1/td-shim/blob/init_version/rust-tdshim/src/ipl.rs). The primitive `set_nx_bit()` and `set_write_protect()` are provided by [memory.rs](https://github.com/jyao1/td-shim/blob/init_version/rust-tdshim/src/memory.rs). 
+Data Execution Prevention (DEP) is setup at `find_and_report_entry_point()` in [ipl.rs](https://github.com/jyao1/td-shim/blob/init_version/rust-tdshim/src/ipl.rs). The primitive `set_nx_bit()` and `set_write_protect()` are provided by [memory.rs](https://github.com/jyao1/td-shim/blob/init_version/rust-tdshim/src/memory.rs).
 
 Control flow Enforcement Technology (CET) Shadow Stack is setup at `enable_cet_ss()` in [cet_ss.rs](https://github.com/jyao1/td-shim/blob/init_version/rust-tdshim/src/cet_ss.rs).
 

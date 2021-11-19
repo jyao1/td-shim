@@ -3,8 +3,8 @@ cargo-features = ["resolver"]
 
 members = [
     "rust-tdshim",
-     "rust-td-payload", 
-     "rust-td-tool", 
+     "rust-td-payload",
+     "rust-td-tool",
      "benchmark",
      "fuzzing/fuzz_pe_loader",
      "no_std_test"
