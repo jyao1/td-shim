@@ -91,7 +91,7 @@ pub fn cpu_get_memory_space_size() -> u8 {
     );
 
     // TBD: Currently we only map the 64GB memory, change back to size_of_mem_space once page table
-    // alocator can be ready.
+    // allocator can be ready.
     core::cmp::min(36, size_of_mem_space)
 }
 

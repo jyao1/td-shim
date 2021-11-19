@@ -17,7 +17,7 @@ The design is at [rust-td design](https://github.com/jyao1/td-shim/blob/init_ver
 
 please use nightly-2021-08-20.
 
-1.1. Intall xbuild
+1.1. Install xbuild
 
 ```
 cargo install cargo-xbuild
@@ -75,4 +75,4 @@ REF: https://github.com/tianocore/edk2-staging/tree/TDVF
 3.  when you run ```git commit```, pre-commit will do check-code things.
 
 ## Known limitation
-This package is only the sample code to show the concept. It does not have a full validation such as robustness functional test and fuzzing test. It does not meet the production quality yet. Any codes including the API definition, the libary and the drivers are subject to change.
+This package is only the sample code to show the concept. It does not have a full validation such as robustness functional test and fuzzing test. It does not meet the production quality yet. Any codes including the API definition, the library and the drivers are subject to change.

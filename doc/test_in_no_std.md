@@ -95,6 +95,6 @@ cargo ktest
 
 #### reference
 
-​	[bootloder](https://github.com/rust-osdev/bootloader)
+​	[bootloader](https://github.com/rust-osdev/bootloader)
 
 ​	[examples_test_framework](https://github.com/rust-osdev/bootloader/tree/main/examples/test_framework)

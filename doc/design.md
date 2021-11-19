@@ -2,7 +2,7 @@
 
 The rust-td is one design choice for a TD.
 
-A `td-shim` takes over the reset vector and prepares the TD environemnt setup. It could be considered as a lightweigth TD Virtual Firmware (TDVF). The td-shim will transfer control to a td-payload.
+A `td-shim` takes over the reset vector and prepares the TD environment setup. It could be considered as a lightweigth TD Virtual Firmware (TDVF). The td-shim will transfer control to a td-payload.
 
 A `td-payload` is a new execution environment. It could be a bare-metal environment, a UEFI virtual firmware, an OS loader, a OS kernel, etc.
 
@@ -32,7 +32,7 @@ Below figure shows the high level design.
 
  The [td-shim threat model](https://github.com/jyao1/td-shim/blob/init_version/doc/threat_model.md) defines the threat model for the td-shim.
 
-This repo includes a full `td-shim`, and sample `td-payload`. The consumer may create other td-payload. For example, to support [TDX](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html) [migration TD](https://www.intel.com/content/dam/develop/external/us/en/documents/tdx-migration-td-design-guide-348987-001.pdf), a rust-migtd can inlcude a td-shim and a migtd-payload.
+This repo includes a full `td-shim`, and sample `td-payload`. The consumer may create other td-payload. For example, to support [TDX](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html) [migration TD](https://www.intel.com/content/dam/develop/external/us/en/documents/tdx-migration-td-design-guide-348987-001.pdf), a rust-migtd can include a td-shim and a migtd-payload.
 
 ## td-shim
 
@@ -52,7 +52,7 @@ Stack guard is setup at `stack_guard_enable()` in [stack_guard.rs](https://githu
 
 ### TDX related lib
 
-[tdx-exception](https://github.com/jyao1/td-shim/tree/init_version/tdx-exception) provides exection handler in TD.
+[tdx-exception](https://github.com/jyao1/td-shim/tree/init_version/tdx-exception) provides execution handler in TD.
 
 [tdx-logger](https://github.com/jyao1/td-shim/tree/init_version/tdx-logger) provides debug logger in TD.
 
@@ -104,7 +104,7 @@ Stack guard is setup at `stack_guard_enable()` in [stack_guard.rs](https://githu
 
 [rudra](https://github.com/jyao1/td-shim/blob/init_version/doc/rudra.md) describes how to scan the vulnerable rust code by using [rudra](https://github.com/sslab-gatech/Rudra).
 
-[cargo-deny](https://github.com/jyao1/td-shim/blob/init_version/.github/workflows/deny.yml) is used to scan the vulnerable rust crate dependency accroding to [rustsec](https://rustsec.org/).
+[cargo-deny](https://github.com/jyao1/td-shim/blob/init_version/.github/workflows/deny.yml) is used to scan the vulnerable rust crate dependency according to [rustsec](https://rustsec.org/).
 
 [no_std_test](https://github.com/jyao1/td-shim/tree/init_version/no_std_test) is used to run test for no_std code.
 

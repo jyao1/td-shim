@@ -110,7 +110,7 @@ pub fn parse_finit_array_section(image: &[u8]) -> Option<Range<usize>> {
     None
 }
 
-/// flag  ture align to low address else high address
+/// flag true align to low address else high address
 fn align_value(value: u64, align: u64, flag: bool) -> u64 {
     if flag {
         value & ((!(align - 1)) as u64)

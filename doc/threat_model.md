@@ -45,7 +45,7 @@ reference:
 
 [Host Firmware Speculative Execution Side Channel Mitigation](https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/host-firmware-speculative-side-channel-mitigation.html)
 
-C-3. The TD SHALL follow best practice on cryptogaphic implementation.
+C-3. The TD SHALL follow best practice on cryptographic implementation.
 
 reference:
 

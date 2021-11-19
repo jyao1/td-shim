@@ -66,7 +66,7 @@ impl<'a> Iterator for Sections<'a> {
     type Item = (CommonSectionHeader, &'a [u8]);
     fn next(&mut self) -> Option<Self::Item> {
         let base_address = self.buffer as *const [u8] as *const u8 as usize;
-        // required 4 bytes alginment
+        // required 4 bytes alignment
         let offset = ((self.offset + 3 + base_address) & (core::usize::MAX - 3)) - base_address;
 
         let header_size = core::mem::size_of::<CommonSectionHeader>();
@@ -106,7 +106,7 @@ impl<'a> Iterator for Files<'a> {
     type Item = (FfsFileHeader, &'a [u8]);
     fn next(&mut self) -> Option<Self::Item> {
         let base_address = self.buffer as *const [u8] as *const u8 as usize;
-        // required 8 bytes alginment
+        // required 8 bytes alignment
         let offset = ((self.offset + 7 + base_address) & (core::usize::MAX - 7)) - base_address;
 
         let header_size = core::mem::size_of::<FfsFileHeader>();
