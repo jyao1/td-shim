@@ -18,8 +18,7 @@ pub const PT_LOAD: u32 = 1;
 
 pub const R_X86_64_RELATIVE: u32 = 8;
 
-// ELFMAG b"\x7FELF"
-pub const ELFMAG: [u8; 4] = [127, 69, 76, 70];
+pub const ELFMAG: [u8; 4] = [b'\x7F', b'E', b'L', b'F'];
 
 pub fn is_elf(image: &[u8]) -> bool {
     image.len() >= 4 && image[0..4] == ELFMAG
