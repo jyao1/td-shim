@@ -51,7 +51,7 @@ pub fn relocate_pe_mem_with_per_sections(
     image: &[u8],
     loaded_buffer: &mut [u8],
     section_closures: impl FnMut(Section),
-) -> (u64, u64, u64) {
+) -> Option<(u64, u64, u64)> {
     // parser file and get entry point
     let image_buffer = image;
     let image_size = image.len();
@@ -62,14 +62,13 @@ pub fn relocate_pe_mem_with_per_sections(
         loaded_buffer,
         new_image_base,
         section_closures,
-    )
-    .unwrap();
+    )?;
 
-    (
+    Some((
         res as u64,
         new_image_base as usize as u64,
         image_size as u64,
-    )
+    ))
 }
 
 pub fn relocate_with_per_section(
@@ -462,14 +461,13 @@ mod test {
 
         let mut loaded_buffer = vec![0u8; 0x200000];
 
-        let (image_entry, image_base, image_size) = super::relocate_pe_mem_with_per_sections(
-            pe_image,
-            loaded_buffer.as_mut_slice(),
-            |_| (),
-        );
-        println!(
-            " 0x:{:x}\n 0x:{:x}\n 0x:{:x}\n",
-            image_entry, image_base, image_size
-        );
+        if let Some((image_entry, image_base, image_size)) =
+            super::relocate_pe_mem_with_per_sections(pe_image, loaded_buffer.as_mut_slice(), |_| ())
+        {
+            println!(
+                " 0x:{:x}\n 0x:{:x}\n 0x:{:x}\n",
+                image_entry, image_base, image_size
+            );
+        }
     }
 }

@@ -440,7 +440,7 @@ pub extern "win64" fn _start(
     };
 
     let (entry, basefw, basefwsize) =
-        ipl::find_and_report_entry_point(&mut mem, fv_buffer).unwrap();
+        ipl::find_and_report_entry_point(&mut mem, fv_buffer).expect("Entry point not found!");
     let entry = entry as usize;
 
     const PAYLOAD_NAME_GUID: efi::Guid = efi::Guid::from_fields(

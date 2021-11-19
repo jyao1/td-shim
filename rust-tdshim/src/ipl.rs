@@ -36,34 +36,30 @@ pub fn find_and_report_entry_point(mem: &mut Memory, fv_buffer: &[u8]) -> Option
     let loaded_buffer = memslice::get_mem_slice_mut(memslice::SliceType::Payload);
     let loaded_buffer_slice = loaded_buffer.as_ptr() as u64;
     let res = if elf::is_elf(image_buffer) {
-        let (image_entry, image_base, image_size) =
-            elf::relocate_elf_with_per_program_header(image_buffer, loaded_buffer, |ph| {
-                if !ph.is_executable() {
-                    mem.set_nx_bit(ph.p_vaddr + loaded_buffer_slice, ph.p_filesz);
-                }
-                if !ph.is_write() {
-                    log::info!("WP in elf: {:x}\n", ph.p_vaddr + loaded_buffer_slice);
-                    mem.set_write_protect(ph.p_vaddr + loaded_buffer_slice, ph.p_filesz);
-                }
-            });
-        (image_entry, image_base, image_size)
+        elf::relocate_elf_with_per_program_header(image_buffer, loaded_buffer, |ph| {
+            if !ph.is_executable() {
+                mem.set_nx_bit(ph.p_vaddr + loaded_buffer_slice, ph.p_filesz);
+            }
+            if !ph.is_write() {
+                log::info!("WP in elf: {:x}\n", ph.p_vaddr + loaded_buffer_slice);
+                mem.set_write_protect(ph.p_vaddr + loaded_buffer_slice, ph.p_filesz);
+            }
+        })?
     } else if pe::is_pe(image_buffer) {
-        let (image_entry, image_base, image_size) =
-            pe::relocate_pe_mem_with_per_sections(image_buffer, loaded_buffer, |sc| {
-                if !sc.is_executable() {
-                    mem.set_nx_bit(
-                        sc.section_virtual_address() as u64 + loaded_buffer_slice,
-                        sc.section_size() as u64,
-                    );
-                }
-                if !sc.is_write() {
-                    mem.set_write_protect(
-                        sc.section_virtual_address() as u64 + loaded_buffer_slice,
-                        sc.section_size() as u64,
-                    );
-                }
-            });
-        (image_entry, image_base, image_size)
+        pe::relocate_pe_mem_with_per_sections(image_buffer, loaded_buffer, |sc| {
+            if !sc.is_executable() {
+                mem.set_nx_bit(
+                    sc.section_virtual_address() as u64 + loaded_buffer_slice,
+                    sc.section_size() as u64,
+                );
+            }
+            if !sc.is_write() {
+                mem.set_write_protect(
+                    sc.section_virtual_address() as u64 + loaded_buffer_slice,
+                    sc.section_size() as u64,
+                );
+            }
+        })?
     } else {
         return None;
     };

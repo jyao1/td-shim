@@ -28,10 +28,10 @@ pub fn relocate_elf_with_per_program_header(
     image: &[u8],
     loaded_buffer: &mut [u8],
     mut program_header_closures: impl FnMut(ProgramHeader),
-) -> (u64, u64, u64) {
+) -> Option<(u64, u64, u64)> {
     let new_image_base = loaded_buffer as *const [u8] as *const u8 as usize;
     // parser file and get entry point
-    let elf = crate::elf64::Elf::parse(image).unwrap();
+    let elf = crate::elf64::Elf::parse(image)?;
 
     let mut bottom: u64 = 0xFFFFFFFFu64;
     let mut top: u64 = 0u64;
@@ -62,7 +62,7 @@ pub fn relocate_elf_with_per_program_header(
     }
 
     // relocate to base
-    for reloc in elf.relocations().unwrap() {
+    for reloc in elf.relocations()? {
         if reloc.r_type() == R_X86_64_RELATIVE {
             let r_addend = reloc.r_addend;
             let r_addend = r_addend;
@@ -71,7 +71,7 @@ pub fn relocate_elf_with_per_program_header(
                     new_image_base as u64 + r_addend as u64,
                     reloc.r_offset as usize,
                 )
-                .unwrap();
+                .ok()?;
         }
     }
 
@@ -79,16 +79,16 @@ pub fn relocate_elf_with_per_program_header(
         program_header_closures(ph);
     }
 
-    (
+    Some((
         elf.header.e_entry + new_image_base as u64,
         bottom as u64,
         (top - bottom) as u64,
-    )
+    ))
 }
 
 pub fn parse_init_array_section(image: &[u8]) -> Option<Range<usize>> {
     // parser file and get the .init_array section, if any
-    let elf = crate::elf64::Elf::parse(image).unwrap();
+    let elf = crate::elf64::Elf::parse(image)?;
 
     for sh in elf.section_headers() {
         if sh.sh_type == crate::elf64::SHT_INIT_ARRAY {
@@ -100,7 +100,7 @@ pub fn parse_init_array_section(image: &[u8]) -> Option<Range<usize>> {
 
 pub fn parse_finit_array_section(image: &[u8]) -> Option<Range<usize>> {
     // parser file and get the .finit_array section, if any
-    let elf = crate::elf64::Elf::parse(image).unwrap();
+    let elf = crate::elf64::Elf::parse(image)?;
 
     for sh in elf.section_headers() {
         if sh.sh_type == crate::elf64::SHT_FINI_ARRAY {
