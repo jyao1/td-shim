@@ -12,3 +12,14 @@ pub struct TdxMpWakeupMailbox {
     pub apic_id: u32,
     pub wakeup_vector: u64,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use scroll::export::mem::size_of;
+
+    #[test]
+    fn ensure_data_struct_size() {
+        assert_eq!(size_of::<TdxMpWakeupMailbox>(), 16);
+    }
+}
