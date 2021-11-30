@@ -1,6 +1,4 @@
-cargo-features = ["resolver"]
 [workspace]
-
 members = [
     "rust-tdshim",
      "rust-td-payload",
@@ -9,9 +7,10 @@ members = [
      "fuzzing/fuzz_pe_loader",
      "fuzzing/fuzz_elf_loader",
      "no_std_test"
-     ]
+]
 
 default-members = ["rust-tdshim", "rust-td-payload"]
+
 resolver = "2"
 
 # the profile used for `cargo build`
